@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Array Gen</title>
+    <style>
+        .grid {
+            display: flex;
+            flex-direction: column;
+            background-color: dimgray;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .tile {
+            height: 20px;
+            width: 20px;
+            border: solid dimgray 1px;
+        }
+    </style>
+</head>
+<body>
+<div class="grid" id="grid"></div>
+<button id="print-button">print</button>
+<script>
+    const DIM = 30
+    const gridArray = Array(DIM).fill(Array(DIM).fill(1))
+    const grid = document.getElementById("grid")
+    for (let i = 0; i < DIM; i++) {
+        const row = document.createElement("div")
+        row.className = "row"
+        for (let j = 0; j < DIM; j++) {
+            const tile = document.createElement("div")
+            tile.style.backgroundColor = "white"
+            tile.addEventListener("click", (event) => {
+                if (gridArray[j][i] === 0) {
+                    gridArray[j][i] = 1
+                    tile.style.backgroundColor = "white"
+                }else{
+                    gridArray[j][i] = 0
+                    tile.style.backgroundColor = "black"
+                }
+                console.log(`click, i: ${i}, j: ${j}`)
+            })
+            tile.className = "tile"
+            row.appendChild(tile)
+        }
+        grid.appendChild(row)
+    }
+    document.getElementById("print-button").addEventListener("click", () => {
+        console.log(gridArray)
+        let printString = "{"
+        for (let i = 0; i < DIM; i++) {
+            printString += "{" + gridArray[i].toString() + "}, "
+        }
+        printString += "}"
+        console.log(printString)
+    })
+</script>
+</body>
+</html>
