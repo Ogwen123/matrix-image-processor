@@ -3,6 +3,8 @@
 #include <math.h>
 #include <vector>
 
+#include "utils/image_conversions.h";// can now use box_blur and gaussian_blur in code
+
 using namespace std;
 
 const int DELTA_TIME = 1000/30;

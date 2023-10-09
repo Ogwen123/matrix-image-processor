@@ -4,7 +4,9 @@ project(blurrer)
 set(CMAKE_CXX_STANDARD 14)
 
 # Must set the path to the main.cpp, for example: src/main.cpp if it is inside a folder
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} src/main.cpp
+        src/utils/image_conversions.h
+        src/utils/image_conversions.cpp)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
