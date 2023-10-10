@@ -1,9 +1,9 @@
 #include <SDL.h>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <vector>
 
-#include "utils/image_conversions.h";// can now use box_blur and gaussian_blur in code
+#include "utils/image_conversions.h"// can now use box_blur and gaussian_blur in code
 
 using namespace std;
 
@@ -11,7 +11,7 @@ const int DELTA_TIME = 1000/30;
 const int HEIGHT = 600;
 const int WIDTH = 600;
 
-vector<vector<float>> genPattern() {// make a checkerboard patten
+__attribute__((unused)) vector<vector<float>> genPattern() {// make a checkerboard patten, clion told me to use __attribute__((unused))
     vector<vector<float>> matrix;
     for (int i = 0; i < 30; i++) {
         vector<float> row;
@@ -40,7 +40,7 @@ vector<vector<double>> applyManipulationMatrix(vector<vector<double>> matrixToCh
 
     for (int i = 1; i < n-1; i++) {
         for (int j = 1; j < m-1; j++) {
-            float total = 0;
+            double total = 0;
             for (int k = 0; k < manipulator.size(); k++) {
                 for (int l = 0; l < manipulator[k].size(); l++) {
                     total += matrixToChange[j+(k-1)][i+(l-1)] * manipulator[k][l];
@@ -56,7 +56,7 @@ vector<vector<double>> applyManipulationMatrix(vector<vector<double>> matrixToCh
 int main(int argc, char* args []) {
 
     //vector<vector<double>> matrix = genPattern();
-    vector<vector<double>> matrix = {
+    vector<vector<double>> matrix = { // supposed to look like a number 1
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 1, 0, 0, 0, 0, 1, 1, 1},
             {1, 1, 1, 0, 1, 0, 0, 1, 1, 1},
@@ -100,8 +100,8 @@ int main(int argc, char* args []) {
             }
         }
         //SDL_SetRenderDrawColor(renderer, 100, 100, 180, 255); // Set the background color to purple
-        int m = matrix.size();
-        int n = matrix[0].size();
+        int m = (int) matrix.size();
+        int n = (int) matrix[0].size();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 SDL_Rect rect;
