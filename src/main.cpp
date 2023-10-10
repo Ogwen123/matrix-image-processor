@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "utils/image_conversions.h"// can now use box_blur and gaussian_blur in code
+#include "utils/util.h"
 
 using namespace std;
 
@@ -11,7 +12,7 @@ const int DELTA_TIME = 1000/30;
 const int HEIGHT = 600;
 const int WIDTH = 600;
 
-__attribute__((unused)) vector<vector<float>> genPattern() {// make a checkerboard patten, clion told me to use __attribute__((unused))
+__attribute__((unused)) vector<vector<float>> generate_pattern() {// make a checkerboard patten, clion told me to use __attribute__((unused))
     vector<vector<float>> matrix;
     for (int i = 0; i < 30; i++) {
         vector<float> row;
@@ -28,7 +29,7 @@ __attribute__((unused)) vector<vector<float>> genPattern() {// make a checkerboa
     return matrix;
 }
 
-vector<vector<double>> applyManipulationMatrix(vector<vector<double>> matrixToChange, vector<vector<double>> manipulator) {
+vector<vector<double>> apply_image_kernel(vector<vector<double>> matrixToChange, vector<vector<double>> kernel) {
     int m = (int) matrixToChange.size(); // height, rows
     int n = (int) matrixToChange[0].size(); // width, columns
 
@@ -41,9 +42,9 @@ vector<vector<double>> applyManipulationMatrix(vector<vector<double>> matrixToCh
     for (int i = 1; i < n-1; i++) {
         for (int j = 1; j < m-1; j++) {
             double total = 0;
-            for (int k = 0; k < manipulator.size(); k++) {
-                for (int l = 0; l < manipulator[k].size(); l++) {
-                    total += matrixToChange[j+(k-1)][i+(l-1)] * manipulator[k][l];
+            for (int k = 0; k < kernel.size(); k++) {
+                for (int l = 0; l < kernel[k].size(); l++) {
+                    total += matrixToChange[j+(k-1)][i+(l-1)] * kernel[k][l];
                 }
             }
             new_matrix[j][i] = total;
@@ -55,7 +56,7 @@ vector<vector<double>> applyManipulationMatrix(vector<vector<double>> matrixToCh
 
 int main(int argc, char* args []) {
 
-    //vector<vector<double>> matrix = genPattern();
+    //vector<vector<double>> matrix = generate_pattern();
     vector<vector<double>> matrix = { // supposed to look like a number 1
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 1, 0, 0, 0, 0, 1, 1, 1},
@@ -69,8 +70,12 @@ int main(int argc, char* args []) {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
 
-    matrix = applyManipulationMatrix(matrix, box_blur);
-    //matrix = applyManipulationMatrix(matrix, gaussian_blur);
+    matrix = matrix_image_expander(matrix, 5);
+
+    //matrix = apply_image_kernel(matrix, box_blur);
+    //matrix = apply_image_kernel(matrix, gaussian_blur);
+    //matrix = apply_image_kernel(matrix, edge_detection);
+    matrix = apply_image_kernel(matrix, sharpen); // obv doesn't do anything on a monochromatic image
 
     // SDL stuff below
     SDL_Init(SDL_INIT_VIDEO);

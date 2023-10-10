@@ -1,10 +1,12 @@
 # blurrer
-lets you manipulate images using matrices (blurring, edge detection, etc)
+lets you manipulate images using matrices (blurring, edge detection, etc)   
+
+array gen was supposed to make it easier to make large patterns, but it doesn't work because javascript was being ass
 
 ## TODO
  - [x] make 'apply image manipulation' function  
- - [ ] add edge detection matrix
- - [ ] make a sharpen matrix
+ - [x] add edge detection matrix
+ - [x] add a sharpen matrix
  - [ ] add buttons to window to change the affect / revert to normal
  - [ ] maybe change it to event driven not using a loop
 
