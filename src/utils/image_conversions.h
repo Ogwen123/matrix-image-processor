@@ -5,7 +5,12 @@
 #ifndef BLURRER_IMAGE_CONVERSIONS_H
 #define BLURRER_IMAGE_CONVERSIONS_H
 
-extern const float box_blur[3][3];
-extern const float gaussian_blur[3][3];
+#include <vector>
+#include <iostream>
+using namespace std;
+
+extern const vector<vector<double>> box_blur;
+extern const vector<vector<double>> gaussian_blur;
+void print_bb();
 
 #endif //BLURRER_IMAGE_CONVERSIONS_H

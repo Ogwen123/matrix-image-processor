@@ -28,15 +28,35 @@ vector<vector<float>> genPattern() {// make a checkerboard patten
     return matrix;
 }
 
-vector<vector<float>> applyManipulationMatrix(vector<vector<float>> matrixToChange) {
-    vector<vector<float>> new_matrix;
+vector<vector<double>> applyManipulationMatrix(vector<vector<double>> matrixToChange, vector<vector<double>> manipulator) {
+    int m = (int) matrixToChange.size(); // height, rows
+    int n = (int) matrixToChange[0].size(); // width, columns
+
+    if (n < 3 || m < 3) {
+        return matrixToChange;
+    }
+
+    vector<vector<double>> new_matrix = matrixToChange;
+
+    for (int i = 1; i < n-1; i++) {
+        for (int j = 1; j < m-1; j++) {
+            float total = 0;
+            for (int k = 0; k < manipulator.size(); k++) {
+                for (int l = 0; l < manipulator[k].size(); l++) {
+                    total += matrixToChange[j+(k-1)][i+(l-1)] * manipulator[k][l];
+                }
+            }
+            new_matrix[j][i] = total;
+            //cout << "done " << i*(m-1) + j << endl;
+        }
+    }
     return new_matrix;
 }
 
 int main(int argc, char* args []) {
 
-    //vector<vector<float>> matrix = genPattern();
-    vector<vector<float>> matrix = {
+    //vector<vector<double>> matrix = genPattern();
+    vector<vector<double>> matrix = {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 1, 0, 0, 0, 0, 1, 1, 1},
             {1, 1, 1, 0, 1, 0, 0, 1, 1, 1},
@@ -47,8 +67,13 @@ int main(int argc, char* args []) {
             {1, 1, 1, 0, 0, 0, 0, 0, 1, 1},
             {1, 1, 1, 0, 0, 0, 0, 0, 1, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
-            SDL_Init(SDL_INIT_VIDEO);
+    };
+
+    matrix = applyManipulationMatrix(matrix, box_blur);
+    //matrix = applyManipulationMatrix(matrix, gaussian_blur);
+
+    // SDL stuff below
+    SDL_Init(SDL_INIT_VIDEO);
 
     SDL_Window* window = SDL_CreateWindow("Blurrer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
     if (window == nullptr) {
