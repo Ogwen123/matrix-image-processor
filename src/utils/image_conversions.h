@@ -8,6 +8,7 @@ using namespace std;
 
 extern const vector<vector<double>> box_blur;
 extern const vector<vector<double>> gaussian_blur;
+extern const vector<vector<double>> big_gaussian_blur;
 extern const vector<vector<double>> edge_detection;
 extern const vector<vector<double>> sharpen;
 void print_bb();

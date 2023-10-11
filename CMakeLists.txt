@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(blurrer)
+project(image_processor)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -8,7 +8,8 @@ add_executable(${PROJECT_NAME} src/main.cpp
         src/utils/image_conversions.h
         src/utils/image_conversions.cpp
         src/utils/util.h
-        src/utils/util.cpp)
+        src/utils/util.cpp
+        src/utils/starting_matrices.h)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
