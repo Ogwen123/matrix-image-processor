@@ -1,4 +1,4 @@
-# blurrer
+# image processor
 lets you manipulate images using matrices (blurring, edge detection, etc)   
 
 array gen was supposed to make it easier to make large patterns, but it doesn't work because javascript was being ass
