@@ -61,17 +61,15 @@ vector<vector<double>> apply_image_kernel(vector<vector<double>> matrixToChange,
 }
 
 int main(int argc, char* args []) {
+    int KERNEL_TRACKER = 0;
+    int KERNEL_TRACKER_MAX = (int) kernel_array.size();
+    int IMAGE_SCALE = 20;
+    cout << KERNEL_TRACKER_MAX << endl;
 
-    //vector<vector<double>> matrix = generate_pattern();
     vector<vector<double>> matrix = one;
+    vector<vector<double>> original_matrix = matrix_image_expander(matrix, IMAGE_SCALE);
 
-    matrix = matrix_image_expander(matrix, 20);
-
-    //matrix = apply_image_kernel(matrix, box_blur);
-    //matrix = apply_image_kernel(matrix, gaussian_blur);
-    matrix = apply_image_kernel(matrix, gaussian_blur);
-    //matrix = apply_image_kernel(matrix, edge_detection);
-    //matrix = apply_image_kernel(matrix, sharpen); // obv doesn't do anything on a monochromatic image
+    matrix = apply_image_kernel(matrix_image_expander(matrix, IMAGE_SCALE), kernel_array[KERNEL_TRACKER]);
 
     // SDL stuff below
     SDL_Init(SDL_INIT_VIDEO);
@@ -91,35 +89,40 @@ int main(int argc, char* args []) {
     }
 
     bool running = true;
-    SDL_Event event;
-
-    int m = (int) matrix.size();
-    int n = (int) matrix[0].size();
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            SDL_Rect rect;
-            rect.x = i*(WIDTH/n);
-            rect.y = j*(HEIGHT/m);
-            rect.w = WIDTH/n;
-            rect.h = HEIGHT/m;
-            int value = (int) round(matrix[j][i] * 255);
-            // to go from grey scale to rgb just set each value of the rgb to the greyscale * 255
-            SDL_SetRenderDrawColor(renderer, value, value, value, value);
-            SDL_RenderFillRect(renderer, &rect);
-
-        }
-    }
-    SDL_RenderPresent(renderer);
-    SDL_Delay(DELTA_TIME);
-    SDL_RenderClear(renderer);
+    SDL_Event Event;
 
     while (running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+        while (SDL_PollEvent(&Event)) {
+            if (Event.type == SDL_QUIT) {
                 running = false;
                 break;
+            } else if (Event.type == SDL_KEYDOWN) {
+                if (Event.key.keysym.sym == SDLK_SPACE) {
+                    KERNEL_TRACKER = (KERNEL_TRACKER + 1) % (KERNEL_TRACKER_MAX + 1);
+                    if (KERNEL_TRACKER == KERNEL_TRACKER_MAX) {matrix = original_matrix;  }
+                    else {matrix = apply_image_kernel(original_matrix, kernel_array[KERNEL_TRACKER]);}
+                }
             }
         }
+        int m = (int) matrix.size();
+        int n = (int) matrix[0].size();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                SDL_Rect rect;
+                rect.x = i*(WIDTH/n);
+                rect.y = j*(HEIGHT/m);
+                rect.w = WIDTH/n;
+                rect.h = HEIGHT/m;
+                int value = (int) round(matrix[j][i] * 255);
+                // to go from grey scale to rgb just set each value of the rgb to the greyscale * 255
+                SDL_SetRenderDrawColor(renderer, value, value, value, value);
+                SDL_RenderFillRect(renderer, &rect);
+
+            }
+        }
+        SDL_RenderPresent(renderer);
+        SDL_Delay(DELTA_TIME);
+        SDL_RenderClear(renderer);
         //SDL_SetRenderDrawColor(renderer, 100, 100, 180, 255); // Set the background color to purple
     }
     SDL_DestroyRenderer(renderer);

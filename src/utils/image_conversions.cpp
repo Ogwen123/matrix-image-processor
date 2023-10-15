@@ -47,6 +47,8 @@ const vector<vector<double>> sharpen = {
         {0, -1, 0}
 };
 
+const vector<vector<vector<double>>> kernel_array = {box_blur, gaussian_blur, big_gaussian_blur, edge_detection, sharpen};
+
 void print_bb() { // debugging
     for (int i = 0; i < box_blur.size(); i++) {
         for (int j = 0; j < box_blur[0].size(); j++) {
